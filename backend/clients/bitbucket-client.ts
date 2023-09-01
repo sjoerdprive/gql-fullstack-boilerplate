@@ -1,5 +1,6 @@
 import { URLSearchParams } from "url";
 import { Commit, Repository } from "../../types/graphql";
+import fetch from "node-fetch";
 
 type PackageJSON = {
   dependencies: Record<string, string>;
@@ -11,10 +12,23 @@ export class BitbucketClient {
   private URL_PREFIX = "https://api.bitbucket.org/2.0";
   private headers = {};
 
-  public async authorize() {
-    const clientId = process.env.BITBUCKET_AUTH_KEY;
-    const clientSecret = process.env.BITBUCKET_AUTH_SECRET;
+  constructor({
+    clientId,
+    clientSecret,
+  }: {
+    clientId: string;
+    clientSecret: string;
+  }) {
+    this.authorize({ clientId, clientSecret });
+  }
 
+  public async authorize({
+    clientId,
+    clientSecret,
+  }: {
+    clientId: string;
+    clientSecret: string;
+  }) {
     const response = await fetch(
       "https://bitbucket.org/site/oauth2/access_token",
       {
@@ -25,11 +39,13 @@ export class BitbucketClient {
           client_secret: clientSecret ?? "",
         }),
       }
-    ).then((res) => res.json());
+    ).then((res) => res.json() as any);
 
     const accessToken = response.access_token;
 
     this.headers = {
+      // "Access-Control-Allow-Origin": "https://sandbox.embed.apollographql.com",
+      // "Access-Control-Allow-Credentials": true,
       Authorization: `Bearer ${accessToken}`,
     };
   }
@@ -74,6 +90,8 @@ export class BitbucketClient {
   ) {
     const endpoint = `${this.URL_PREFIX}/repositories/${workspace}/${repository}/commits`;
     const headers = this.headers;
+
+    console.log({ repository });
 
     console.log({ headers });
 
