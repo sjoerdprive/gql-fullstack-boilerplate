@@ -1,3 +1,4 @@
+# (Temporary) db for local development
 version: "3"
 services:
   mongodb:
