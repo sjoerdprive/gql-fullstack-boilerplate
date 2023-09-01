@@ -1,0 +1,53 @@
+type Book {
+  title: String
+  author: Author
+}
+
+type Author {
+  name: String
+  books: [Book]
+}
+
+type Commit {
+  type: String
+  hash: String
+  date: String
+  message: String
+  # author: any
+  # summary: any
+  # links: any
+  # parents: any[]
+  # rendered: any
+  # repository: any
+}
+
+interface RepositoryProperty {
+  type: String
+  uuid: String
+}
+
+type Repository {
+  type: String
+  full_name: String
+  name: String
+  slug: String
+  description: String
+  scm: String
+  owner: RepositoryProperty
+  workspace: RepositoryProperty
+  is_private: Boolean
+  project: RepositoryProperty
+  fork_policy: String
+  created_on: String
+  updated_on: String
+  size: Float
+  language: String
+  has_issues: Boolean
+  has_wiki: Boolean
+  uuid: String
+}
+
+type Query {
+  author(id: String!): Author!
+  commits(repository: String!): [Commit]
+}
