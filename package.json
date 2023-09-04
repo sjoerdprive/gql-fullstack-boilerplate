@@ -27,6 +27,8 @@
     "@graphql-codegen/cli": "5.0.0",
     "@graphql-codegen/typescript": "4.0.1",
     "@graphql-codegen/typescript-resolvers": "4.0.1",
+    "@types/node": "^20.5.7",
+    "eslint": "^8.48.0",
     "nodemon": "^3.0.1",
     "ts-morph": "^19.0.0",
     "ts-node-dev": "^2.0.0",

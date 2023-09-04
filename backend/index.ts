@@ -21,7 +21,7 @@ const bitbucketClient = new BitbucketClient({
 const resolvers = {
   Query: {
     commits: async (_: any, { repository }: { repository: string }) => {
-      return (await bitbucketClient.getCommits(repository))?.values;
+      return (await bitbucketClient.getCommits(repository))?.values || [];
     },
   },
 };
