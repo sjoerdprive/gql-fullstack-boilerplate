@@ -1,14 +1,17 @@
-
-import type { CodegenConfig } from '@graphql-codegen/cli';
+import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
   overwrite: true,
   schema: "backend/schema.graphql",
   generates: {
     "types/graphql.ts": {
-      plugins: ["typescript", "typescript-resolvers"]
-    }
-  }
+      plugins: ["typescript", "typescript-resolvers"],
+      config: {
+        contextType: "../backend/index#ApolloContext",
+        useIndexSignature: true,
+      },
+    },
+  },
 };
 
 export default config;

@@ -2,5 +2,5 @@
   "ignore": ["**/*.test.ts", "**/*.spec.ts", ".git", "node_modules"],
   "watch": ["backend", ".env"],
   "exec": "ts-node -r ts-node/register -r dotenv/config ./backend/index.ts",
-  "ext": "ts, js, tsx"
+  "ext": "ts, js, tsx, .graphql"
 }

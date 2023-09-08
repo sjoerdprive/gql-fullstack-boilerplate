@@ -1,5 +1,5 @@
 import { URLSearchParams } from "url";
-import { Commit, Repository } from "../../types/graphql";
+import { Commit, Repository, Tag } from "../../types/graphql";
 import fetch from "node-fetch";
 
 type PackageJSON = {
@@ -63,7 +63,7 @@ export class BitbucketClient {
     }).then((res) => res.json())) as Repository;
   }
 
-  public async getDependencies(
+  public async getPackageJSON(
     repository: string,
     branch: string = "master",
     workspace: string = "wazzup-ondemand"
@@ -76,34 +76,41 @@ export class BitbucketClient {
       headers,
     }).then((res) => res.json())) as PackageJSON;
 
-    const dependencies = {
-      ...packageJson.dependencies,
-      ...packageJson.devDependencies,
-    };
-
-    return dependencies;
+    return packageJson;
   }
 
-  public async getCommits(
-    repository: string,
-    workspace: string = "wazzup-ondemand"
-  ) {
-    const endpoint = `${this.URL_PREFIX}/repositories/${workspace}/${repository}/commits`;
+  public async getCommits(repository: string) {
+    const endpoint = `${this.URL_PREFIX}/repositories/wazzup-ondemand/${repository}/commits`;
     const headers = this.headers;
 
-    console.log({ repository });
-
-    console.log({ headers });
-
-    const res = await fetch(endpoint, {
+    const res = (await fetch(endpoint, {
       method: "GET",
       headers,
     })
       .then((res) => res.json())
-      .catch((error) => console.log({ error }));
+      .catch((error) => console.log({ error }))) as { values: Commit[] };
 
-    console.log({ res });
+    return res.values;
+  }
 
-    return res as Promise<{ values: Commit[] }>;
+  public async getTags(repository: string) {
+    const headers = this.headers;
+
+    const response = (await fetch(
+      `${this.URL_PREFIX}/repositories/wazzup-ondemand/${repository}/refs/tags`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          ...headers,
+        },
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .catch((err) => console.error(err))) as { values: Tag[] };
+
+    return response.values;
   }
 }

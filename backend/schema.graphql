@@ -1,14 +1,44 @@
+type Avatar {
+  href: String
+}
+
+type UserLinks {
+  avatar: Avatar
+}
+
+type User {
+  nickname: String
+  links: UserLinks
+}
+
+type Author {
+  user: User
+}
+
+type PackageDiff {
+  packageName: String
+  currentVersion: String
+  latestVersion: String
+}
+
 type Commit {
   type: String
   hash: String
   date: String
   message: String
-  # author: any
+  author: Author
   # summary: any
   # links: any
   # parents: any[]
   # rendered: any
   # repository: any
+}
+
+type Tag {
+  name: String
+  message: String
+  date: String
+  target: Commit
 }
 
 interface RepositoryProperty {
@@ -39,4 +69,7 @@ type Repository {
 
 type Query {
   commits(repository: String!): [Commit]
+  tags(repository: String!): [Tag]
+  availableDependencyUpgrades(repository: String!): [PackageDiff]
+  currentCommitOnAlpha(repository: String!): Commit
 }

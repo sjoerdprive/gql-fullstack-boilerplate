@@ -1,4 +1,5 @@
 import { GraphQLResolveInfo } from 'graphql';
+import { ApolloContext } from '../backend/index';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -16,21 +17,57 @@ export type Scalars = {
   Float: { input: number; output: number; }
 };
 
+export type Author = {
+  __typename?: 'Author';
+  user?: Maybe<User>;
+};
+
+export type Avatar = {
+  __typename?: 'Avatar';
+  href?: Maybe<Scalars['String']['output']>;
+};
+
 export type Commit = {
   __typename?: 'Commit';
+  author?: Maybe<Author>;
   date?: Maybe<Scalars['String']['output']>;
   hash?: Maybe<Scalars['String']['output']>;
   message?: Maybe<Scalars['String']['output']>;
   type?: Maybe<Scalars['String']['output']>;
 };
 
+export type PackageDiff = {
+  __typename?: 'PackageDiff';
+  currentVersion?: Maybe<Scalars['String']['output']>;
+  latestVersion?: Maybe<Scalars['String']['output']>;
+  packageName?: Maybe<Scalars['String']['output']>;
+};
+
 export type Query = {
   __typename?: 'Query';
+  availableDependencyUpgrades?: Maybe<Array<Maybe<PackageDiff>>>;
   commits?: Maybe<Array<Maybe<Commit>>>;
+  currentCommitOnAlpha?: Maybe<Commit>;
+  tags?: Maybe<Array<Maybe<Tag>>>;
+};
+
+
+export type QueryAvailableDependencyUpgradesArgs = {
+  repository: Scalars['String']['input'];
 };
 
 
 export type QueryCommitsArgs = {
+  repository: Scalars['String']['input'];
+};
+
+
+export type QueryCurrentCommitOnAlphaArgs = {
+  repository: Scalars['String']['input'];
+};
+
+
+export type QueryTagsArgs = {
   repository: Scalars['String']['input'];
 };
 
@@ -61,7 +98,27 @@ export type RepositoryProperty = {
   uuid?: Maybe<Scalars['String']['output']>;
 };
 
+export type Tag = {
+  __typename?: 'Tag';
+  date?: Maybe<Scalars['String']['output']>;
+  message?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  target?: Maybe<Commit>;
+};
 
+export type User = {
+  __typename?: 'User';
+  links?: Maybe<UserLinks>;
+  nickname?: Maybe<Scalars['String']['output']>;
+};
+
+export type UserLinks = {
+  __typename?: 'UserLinks';
+  avatar?: Maybe<Avatar>;
+};
+
+export type WithIndex<TObject> = TObject & Record<string, any>;
+export type ResolversObject<TObject> = WithIndex<TObject>;
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
@@ -130,45 +187,78 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 
 /** Mapping of interface types */
-export type ResolversInterfaceTypes<RefType extends Record<string, unknown>> = {
+export type ResolversInterfaceTypes<RefType extends Record<string, unknown>> = ResolversObject<{
   RepositoryProperty: never;
-};
+}>;
 
 /** Mapping between all available schema types and the resolvers types */
-export type ResolversTypes = {
+export type ResolversTypes = ResolversObject<{
+  Author: ResolverTypeWrapper<Author>;
+  Avatar: ResolverTypeWrapper<Avatar>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']['output']>;
   Commit: ResolverTypeWrapper<Commit>;
   Float: ResolverTypeWrapper<Scalars['Float']['output']>;
+  PackageDiff: ResolverTypeWrapper<PackageDiff>;
   Query: ResolverTypeWrapper<{}>;
   Repository: ResolverTypeWrapper<Repository>;
   RepositoryProperty: ResolverTypeWrapper<ResolversInterfaceTypes<ResolversTypes>['RepositoryProperty']>;
   String: ResolverTypeWrapper<Scalars['String']['output']>;
-};
+  Tag: ResolverTypeWrapper<Tag>;
+  User: ResolverTypeWrapper<User>;
+  UserLinks: ResolverTypeWrapper<UserLinks>;
+}>;
 
 /** Mapping between all available schema types and the resolvers parents */
-export type ResolversParentTypes = {
+export type ResolversParentTypes = ResolversObject<{
+  Author: Author;
+  Avatar: Avatar;
   Boolean: Scalars['Boolean']['output'];
   Commit: Commit;
   Float: Scalars['Float']['output'];
+  PackageDiff: PackageDiff;
   Query: {};
   Repository: Repository;
   RepositoryProperty: ResolversInterfaceTypes<ResolversParentTypes>['RepositoryProperty'];
   String: Scalars['String']['output'];
-};
+  Tag: Tag;
+  User: User;
+  UserLinks: UserLinks;
+}>;
 
-export type CommitResolvers<ContextType = any, ParentType extends ResolversParentTypes['Commit'] = ResolversParentTypes['Commit']> = {
+export type AuthorResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['Author'] = ResolversParentTypes['Author']> = ResolversObject<{
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type AvatarResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['Avatar'] = ResolversParentTypes['Avatar']> = ResolversObject<{
+  href?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type CommitResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['Commit'] = ResolversParentTypes['Commit']> = ResolversObject<{
+  author?: Resolver<Maybe<ResolversTypes['Author']>, ParentType, ContextType>;
   date?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   hash?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
-export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+export type PackageDiffResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['PackageDiff'] = ResolversParentTypes['PackageDiff']> = ResolversObject<{
+  currentVersion?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  latestVersion?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  packageName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type QueryResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  availableDependencyUpgrades?: Resolver<Maybe<Array<Maybe<ResolversTypes['PackageDiff']>>>, ParentType, ContextType, RequireFields<QueryAvailableDependencyUpgradesArgs, 'repository'>>;
   commits?: Resolver<Maybe<Array<Maybe<ResolversTypes['Commit']>>>, ParentType, ContextType, RequireFields<QueryCommitsArgs, 'repository'>>;
-};
+  currentCommitOnAlpha?: Resolver<Maybe<ResolversTypes['Commit']>, ParentType, ContextType, RequireFields<QueryCurrentCommitOnAlphaArgs, 'repository'>>;
+  tags?: Resolver<Maybe<Array<Maybe<ResolversTypes['Tag']>>>, ParentType, ContextType, RequireFields<QueryTagsArgs, 'repository'>>;
+}>;
 
-export type RepositoryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Repository'] = ResolversParentTypes['Repository']> = {
+export type RepositoryResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['Repository'] = ResolversParentTypes['Repository']> = ResolversObject<{
   created_on?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   fork_policy?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -188,18 +278,43 @@ export type RepositoryResolvers<ContextType = any, ParentType extends ResolversP
   uuid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   workspace?: Resolver<Maybe<ResolversTypes['RepositoryProperty']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-};
+}>;
 
-export type RepositoryPropertyResolvers<ContextType = any, ParentType extends ResolversParentTypes['RepositoryProperty'] = ResolversParentTypes['RepositoryProperty']> = {
+export type RepositoryPropertyResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['RepositoryProperty'] = ResolversParentTypes['RepositoryProperty']> = ResolversObject<{
   __resolveType: TypeResolveFn<null, ParentType, ContextType>;
   type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   uuid?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-};
+}>;
 
-export type Resolvers<ContextType = any> = {
+export type TagResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['Tag'] = ResolversParentTypes['Tag']> = ResolversObject<{
+  date?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  target?: Resolver<Maybe<ResolversTypes['Commit']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type UserResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = ResolversObject<{
+  links?: Resolver<Maybe<ResolversTypes['UserLinks']>, ParentType, ContextType>;
+  nickname?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type UserLinksResolvers<ContextType = ApolloContext, ParentType extends ResolversParentTypes['UserLinks'] = ResolversParentTypes['UserLinks']> = ResolversObject<{
+  avatar?: Resolver<Maybe<ResolversTypes['Avatar']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type Resolvers<ContextType = ApolloContext> = ResolversObject<{
+  Author?: AuthorResolvers<ContextType>;
+  Avatar?: AvatarResolvers<ContextType>;
   Commit?: CommitResolvers<ContextType>;
+  PackageDiff?: PackageDiffResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Repository?: RepositoryResolvers<ContextType>;
   RepositoryProperty?: RepositoryPropertyResolvers<ContextType>;
-};
+  Tag?: TagResolvers<ContextType>;
+  User?: UserResolvers<ContextType>;
+  UserLinks?: UserLinksResolvers<ContextType>;
+}>;
 
