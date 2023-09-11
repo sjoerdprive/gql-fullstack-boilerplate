@@ -5,12 +5,15 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "start:backend": "nodemon",
+    "dev": "concurrently \"yarn dev:backend\" \"yarn dev:frontend\"",
+    "dev:backend": "nodemon",
+    "dev:frontend": "vite --open",
     "db:up": "docker-compose up -d",
     "db:down": "docker-compose down",
     "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
+    "@apollo/client": "^3.8.3",
     "@apollo/server": "^4.9.1",
     "@as-integrations/fastify": "^2.1.0",
     "@fastify/cors": "^8.3.0",
@@ -19,6 +22,8 @@
     "graphql": "^16.8.0",
     "node-fetch": "^3.3.2",
     "npm-check-updates": "^16.13.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "ts-node": "^10.9.1"
@@ -27,11 +32,16 @@
     "@graphql-codegen/cli": "5.0.0",
     "@graphql-codegen/typescript": "4.0.1",
     "@graphql-codegen/typescript-resolvers": "4.0.1",
-    "@types/node": "^20.5.7",
+    "@types/node": "^20.5.9",
+    "@types/react": "^18.2.21",
+    "@types/react-dom": "^18.2.7",
+    "@vitejs/plugin-react": "^4.0.4",
+    "concurrently": "^8.2.1",
     "eslint": "^8.48.0",
     "nodemon": "^3.0.1",
     "ts-morph": "^19.0.0",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "vite": "^4.4.9"
   }
 }
