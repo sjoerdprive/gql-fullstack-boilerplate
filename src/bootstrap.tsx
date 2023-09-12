@@ -1,10 +1,11 @@
+import { RouterProvider } from "react-router";
 import { GraphQLProvider } from "./injectors/graphql-provider";
-import { TestApp } from "./test";
+import { router } from "./router";
 
 export const Bootstrap = () => {
   return (
     <GraphQLProvider>
-      <TestApp />
+      <RouterProvider router={router} />
     </GraphQLProvider>
   );
 };

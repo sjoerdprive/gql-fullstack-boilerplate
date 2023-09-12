@@ -9,7 +9,7 @@ const GET_LATEST_ALPHA_COMMIT = gql(`
           }
         `);
 
-export const TestApp = () => {
+export const App = () => {
   const { data, loading } = useQuery(GET_LATEST_ALPHA_COMMIT, {
     variables: {
       repository: "haywork_app_v4-2",
