@@ -1,8 +1,4 @@
-import { render } from "react-dom";
+import { createRoot } from "react-dom/client";
+import { Bootstrap } from "./bootstrap";
 
-render(
-  <div>
-    <h1>Hi there</h1>
-  </div>,
-  document.getElementById("root")
-);
+createRoot(document.getElementById("root")!).render(<Bootstrap />);
