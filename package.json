@@ -50,6 +50,7 @@
     "ts-morph": "^19.0.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.1.6",
-    "vite": "^4.4.9"
+    "vite": "^4.4.9",
+    "vite-plugin-lightningcss": "^0.0.5"
   }
 }
